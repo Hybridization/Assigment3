@@ -70,7 +70,6 @@ public class AnagramChecker
         return true;
     }
 
-
     @Override
     public String toString()
     {
