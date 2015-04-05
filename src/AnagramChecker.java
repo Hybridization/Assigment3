@@ -1,35 +1,67 @@
+/*
+Author: Matthew Hoare
+E-mail: mrh5493@psu.edu
+Course: CMPSC 221
+Assignment: Programming Assignment 3
+Due date: 4/4/2015
+File:  AnagramChecker.java
+Purpose: To Check to See if Words in file are Anagram and Output the Result
+Compiler/IDE: Java SE Development Kit 8u40/IntelliJ IDEA 14.1.1
+Operating
+system: MS Windows 8.1 Pro
+Reference(s): Java 8 API - Oracle Documentation
+(http://docs.oracle.com/javase/8/docs/api/)
+*/
+
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AnagramChecker
 {
-    ArrayList<String> words = new ArrayList<String>();
-    ArrayList<String> orginalwords = new ArrayList<String>();
+    private ArrayList<String> words = new ArrayList<String>();
+    private ArrayList<String> orginalwords = new ArrayList<String>();
 
+    /** This Constructor will read from File and store data into Two ArrayLists
+     *
+     * @param input File Object that will be readed for input
+     */
     AnagramChecker(File input)
     {
         Scanner sc = null;
 
         try {
-            sc = new Scanner(input);
+            sc = new Scanner(input); // Open File
+            System.out.println("File Found\nNow Reading From File");
+
+            int pos =0;  // Reading from file
+            while(sc.hasNextLine())
+            {
+                orginalwords.add(sc.nextLine()); // For output
+                words.add(orginalwords.get(pos).toUpperCase().replaceAll(" ", "")); // For Checking
+                pos++;
+            }
+
+            sc.close(); //Closing File
+        }
+        catch(FileNotFoundException e)
+        {
+            System.out.println("File Not Found\nNow Exiting Program");
+            System.exit(0);
         }
         catch (Exception e)
         {
           System.out.println(e.getMessage());
         }
-
-        int pos =0;
-        while(sc.hasNextLine())
-        {
-            orginalwords.add(sc.nextLine());
-            words.add(orginalwords.get(pos).toUpperCase().replaceAll(" ", ""));
-            pos++;
-        }
-
-        sc.close();
     }
 
+    /** return a string containing the output that will be write to file
+     *
+     * @return the string containing answer to the anagrams
+     */
     public String returnCheck()
     {
         String answer = "";
@@ -42,10 +74,15 @@ public class AnagramChecker
                 answer+=  orginalwords.get(x) + " and " + orginalwords.get(x+1) +" are NOT anagrams.\n";
         }
 
-
         return answer;
     }
 
+    /** return true or false if pairs are anagrams or not
+     *
+     * @param s first word to be checked
+     * @param s1 second word to be checked
+     * @return true if pairs are anagrams and false if otherwise
+     */
     private boolean check(String s, String s1) {
 
         if(s.length() != s1.length()) // First Check
@@ -70,15 +107,28 @@ public class AnagramChecker
         return true;
     }
 
-    @Override
-    public String toString()
+    /** this will take a string and write to a file
+     *
+     * @param output name of file that will maded
+     * @param s string to be writen to file
+     */
+    public void WriteToFile(String output, String s)
     {
-        String answer = "";
+        try
+        {
+            System.out.println("Now Writing to File");
 
-        for(int x=0;x<words.size();x++)
-            answer += words.get(x) + "\n";
+            FileWriter writer = new FileWriter(output);
+            BufferedWriter bufferwritter = new BufferedWriter(writer);
+            bufferwritter.write(s);
+            bufferwritter.close();
 
-        return answer;
+            System.out.println("File is Done");
+
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error Occur While Writing File\nNow Exiting Program");
+        }
     }
-
 }
