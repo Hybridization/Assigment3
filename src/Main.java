@@ -19,9 +19,9 @@ public class Main
 {
     public static void main(String args[])
     {
-        AnagramChecker checker = new AnagramChecker(new File("Res/AnagramPairs.txt"));
+        AnagramChecker checker = new AnagramChecker(new File("AnagramPairs.txt"));
         System.out.println("Now Checking Anagrams pairs");
-        checker.WriteToFile("Res/Ouput.txt", checker.returnCheck());
+        checker.WriteToFile("Ouput.txt", checker.returnCheck());
     }
 
 }
